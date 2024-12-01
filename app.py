@@ -70,6 +70,23 @@ def generate_response(ai_definition:str, chat_history:list):
       )
   return response.choices[0].message.content
 
+def load_css() -> str:
+    """
+    Loads CSS stylesheet from local files.
+
+    Returns:
+    - str: The content of the CSS file.
+    """
+    # Load CSS stylesheet
+    try:
+        with open('static/styles.css') as f:
+            custom_css = f.read()
+        return custom_css
+    except FileNotFoundError:
+        print("❗Error loading stylesheet: File not found.")
+    except Exception as e:
+        print(f"❗Error loading stylesheet: {e}")
+
 def main():
   # Streamlit App
   st.set_page_config(
@@ -80,8 +97,12 @@ def main():
   )
   st.title("Perso9 🦊")
 
+  # Custom CSS
+  st.markdown(f'<style>{load_css()}</style>', unsafe_allow_html=True)
+
   # Form for AI customization
   with st.sidebar:
+    st.markdown("# 🦊 Configure me:")
     with st.form("ai_customization_form"):
       ai_personality = st.text_input("AI Personality", "Friendly and helpful assistant")
       ai_role = st.text_input("AI Role", "General assistant")
