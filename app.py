@@ -77,7 +77,6 @@ def load_css() -> str:
     Returns:
     - str: The content of the CSS file.
     """
-    # Load CSS stylesheet
     try:
         with open('static/styles.css') as f:
             custom_css = f.read()
@@ -102,28 +101,55 @@ def main():
 
   # Form for AI customization
   with st.sidebar:
-    st.markdown("# 🦊 Configure me:")
-    with st.form("ai_customization_form"):
-      ai_personality = st.text_input("AI Personality", "Friendly and helpful assistant")
-      ai_role = st.text_input("AI Role", "General assistant")
-      ai_tone = st.selectbox("Tone of Voice", ["Formal", "Casual", "Inspirational", "Technical"], index=1)
-      ai_scope = st.text_input("Knowledge Scope", "General knowledge across various topics")
-      ai_language = st.selectbox("Preferred Language", ["English", "Spanish", "French", "Other"], index=0)
-      custom_instructions = st.text_area("Custom Instructions (Optional)")
-      submitted_form = st.form_submit_button("Create AI")
+    st.markdown("# 🦊 Create Your AI Character")
+    main_container = st.container(border=True)
+    main_container.write("🎨 Personalize your AI by filling in a few details or choose a preset!")
 
-  # Combine fields into a system prompt
-  if submitted_form:
-    ai_definition = f"""
-    Personality: {ai_personality}.
-    Role: {ai_role}.
-    Tone of voice: {ai_tone}.
-    Knowledge scope: {ai_scope}.
-    Preferred language: {ai_language}.
-    Custom instructions: {custom_instructions}.
-    """
-    sst.ai_definition = ai_definition
-    st.success("AI created successfully! Start chatting below.")
+    # Character Presets
+    preset_choice = main_container.radio(
+      "Choose a Character Preset:",
+      ["Friendly Assistant", "Motivational Coach", "Tech Expert", "Storyteller", "Custom"],
+      index=0
+    )
+
+    if preset_choice == "Custom":
+      with st.form("ai_customization_form"):
+        st.write("✨ Customize your AI below:")
+        character_name = st.text_input("Character Name", "Perso9")
+        personality_description = st.text_area("Describe the Personality", "Friendly and helpful.")
+        favorite_topics = st.text_input("Topics of Interest", "Technology, Science, Art")
+        communication_style = st.selectbox(
+            "Communication Style", 
+            ["Casual", "Formal", "Motivational", "Technical"], 
+            index=0
+        )
+        preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
+        submitted_form = st.form_submit_button("Create AI")
+    else:
+      # Preset definitions
+      preset_definitions = {
+        "Friendly Assistant": "A helpful and approachable AI ready to assist with any topic.",
+        "Motivational Coach": "An enthusiastic AI that encourages and inspires users.",
+        "Tech Expert": "A knowledgeable AI specializing in technology and gadgets.",
+        "Storyteller": "A creative AI that weaves engaging stories and tales."
+      }
+      character_name = preset_choice
+      personality_description = preset_definitions[preset_choice]
+      favorite_topics = "General topics"
+      communication_style = "Casual"
+      preferred_language = "English"
+      submitted_form = True
+
+    if submitted_form:
+      # Generate the AI definition based on inputs
+      sst.ai_definition = f"""
+      Name: {character_name}.
+      Personality: {personality_description}.
+      Topics: {favorite_topics}.
+      Communication Style: {communication_style}.
+      Language: {preferred_language}.
+      """
+      st.toast(f"✅ {character_name} created successfully! Start chatting below.")
 
   # Default AI definition if the form isn't submitted
   if "ai_definition" not in sst:
