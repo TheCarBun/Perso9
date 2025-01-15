@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit import session_state as sst
 from streamlit_chat import message
 from openai import OpenAI
+import json, os
 
 client = OpenAI(
     api_key= st.secrets['OPENAI_API_KEY']
@@ -70,6 +71,26 @@ def generate_response(ai_definition:str, chat_history:list):
       )
   return response.choices[0].message.content
 
+def load_presets(file_path="presets.json"):
+  """
+  Load presets from a JSON file.
+  
+  Args:
+    file_path (str): Path to the JSON file containing presets.
+
+  Returns:
+    dict: Dictionary of presets.
+  """
+  if not os.path.exists(file_path):
+    print("❗Error: Preset file not found.")
+    return {}
+  try:
+    with open(file_path, "r") as file:
+      return json.load(file)
+  except Exception as e:
+    print(f"❗Error loading presets: {e}")
+    return {}
+
 def load_css() -> str:
     """
     Loads CSS stylesheet from local files.
@@ -99,18 +120,21 @@ def main():
   # Custom CSS
   st.markdown(f'<style>{load_css()}</style>', unsafe_allow_html=True)
 
+  # Load presets
+  presets = load_presets()
+
   # Form for AI customization
   with st.sidebar:
     st.markdown("# 🦊 Create Your AI Character")
-    main_container = st.container(border=True)
-    main_container.write("🎨 Personalize your AI by filling in a few details or choose a preset!")
+    with st.container(border=True):
+      st.write("🎨 Personalize your AI by filling in a few details or choose a preset!")
 
-    # Character Presets
-    preset_choice = main_container.radio(
-      "Choose a Character Preset:",
-      ["Friendly Assistant", "Motivational Coach", "Tech Expert", "Storyteller", "Custom"],
-      index=0
-    )
+      # Character Presets
+      preset_choice = st.radio(
+            "Choose a Character Preset:",
+            list(presets.keys()) + ["Custom"],
+            index=0
+        )
 
     if preset_choice == "Custom":
       with st.form("ai_customization_form"):
@@ -126,34 +150,25 @@ def main():
         preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
         submitted_form = st.form_submit_button("Create AI")
     else:
-      # Preset definitions
-      preset_definitions = {
-        "Friendly Assistant": "A helpful and approachable AI ready to assist with any topic.",
-        "Motivational Coach": "An enthusiastic AI that encourages and inspires users.",
-        "Tech Expert": "A knowledgeable AI specializing in technology and gadgets.",
-        "Storyteller": "A creative AI that weaves engaging stories and tales."
-      }
+      # Use the selected preset
+      preset_data = presets[preset_choice]
       character_name = preset_choice
-      personality_description = preset_definitions[preset_choice]
-      favorite_topics = "General topics"
-      communication_style = "Casual"
-      preferred_language = "English"
+      personality_description = preset_data["personality_description"]
+      favorite_topics = preset_data["favorite_topics"]
+      communication_style = preset_data["communication_style"]
+      preferred_language = preset_data["preferred_language"]
       submitted_form = True
 
-    if submitted_form:
-      # Generate the AI definition based on inputs
-      sst.ai_definition = f"""
-      Name: {character_name}.
-      Personality: {personality_description}.
-      Topics: {favorite_topics}.
-      Communication Style: {communication_style}.
-      Language: {preferred_language}.
-      """
-      st.toast(f"✅ {character_name} created successfully! Start chatting below.")
-
-  # Default AI definition if the form isn't submitted
-  if "ai_definition" not in sst:
-    sst.ai_definition = "You are a friendly and helpful assistant."
+  if submitted_form:
+    # Generate the AI definition based on inputs
+    sst.ai_definition = f"""
+    Name: {character_name}.
+    Personality: {personality_description}.
+    Topics: {favorite_topics}.
+    Communication Style: {communication_style}.
+    Language: {preferred_language}.
+    """
+    st.toast(f"✅ {character_name} created successfully! Start chatting below.")
 
   # Chat interface
   if "chat_history" not in sst:
