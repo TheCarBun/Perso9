@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit import session_state as sst
 from streamlit_chat import message
 from openai import OpenAI
+import json, os
 
 client = OpenAI(
     api_key= st.secrets['OPENAI_API_KEY']
@@ -70,6 +71,26 @@ def generate_response(ai_definition:str, chat_history:list):
       )
   return response.choices[0].message.content
 
+def load_presets(file_path="presets.json"):
+  """
+  Load presets from a JSON file.
+  
+  Args:
+    file_path (str): Path to the JSON file containing presets.
+
+  Returns:
+    dict: Dictionary of presets.
+  """
+  if not os.path.exists(file_path):
+    print("❗Error: Preset file not found.")
+    return {}
+  try:
+    with open(file_path, "r") as file:
+      return json.load(file)
+  except Exception as e:
+    print(f"❗Error loading presets: {e}")
+    return {}
+
 def load_css() -> str:
     """
     Loads CSS stylesheet from local files.
@@ -77,7 +98,6 @@ def load_css() -> str:
     Returns:
     - str: The content of the CSS file.
     """
-    # Load CSS stylesheet
     try:
         with open('static/styles.css') as f:
             custom_css = f.read()
@@ -100,34 +120,55 @@ def main():
   # Custom CSS
   st.markdown(f'<style>{load_css()}</style>', unsafe_allow_html=True)
 
+  # Load presets
+  presets = load_presets()
+
   # Form for AI customization
   with st.sidebar:
-    st.markdown("# 🦊 Configure me:")
-    with st.form("ai_customization_form"):
-      ai_personality = st.text_input("AI Personality", "Friendly and helpful assistant")
-      ai_role = st.text_input("AI Role", "General assistant")
-      ai_tone = st.selectbox("Tone of Voice", ["Formal", "Casual", "Inspirational", "Technical"], index=1)
-      ai_scope = st.text_input("Knowledge Scope", "General knowledge across various topics")
-      ai_language = st.selectbox("Preferred Language", ["English", "Spanish", "French", "Other"], index=0)
-      custom_instructions = st.text_area("Custom Instructions (Optional)")
-      submitted_form = st.form_submit_button("Create AI")
+    st.markdown("# 🦊 Create Your AI Character")
+    with st.container(border=True):
+      st.write("🎨 Personalize your AI by filling in a few details or choose a preset!")
 
-  # Combine fields into a system prompt
+      # Character Presets
+      preset_choice = st.radio(
+            "Choose a Character Preset:",
+            list(presets.keys()) + ["Custom"],
+            index=0
+        )
+
+    if preset_choice == "Custom":
+      with st.form("ai_customization_form"):
+        st.write("✨ Customize your AI below:")
+        character_name = st.text_input("Character Name", "Perso9")
+        personality_description = st.text_area("Describe the Personality", "Friendly and helpful.")
+        favorite_topics = st.text_input("Topics of Interest", "Technology, Science, Art")
+        communication_style = st.selectbox(
+            "Communication Style", 
+            ["Casual", "Formal", "Motivational", "Technical"], 
+            index=0
+        )
+        preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
+        submitted_form = st.form_submit_button("Create AI")
+    else:
+      # Use the selected preset
+      preset_data = presets[preset_choice]
+      character_name = preset_choice
+      personality_description = preset_data["personality_description"]
+      favorite_topics = preset_data["favorite_topics"]
+      communication_style = preset_data["communication_style"]
+      preferred_language = preset_data["preferred_language"]
+      submitted_form = True
+
   if submitted_form:
-    ai_definition = f"""
-    Personality: {ai_personality}.
-    Role: {ai_role}.
-    Tone of voice: {ai_tone}.
-    Knowledge scope: {ai_scope}.
-    Preferred language: {ai_language}.
-    Custom instructions: {custom_instructions}.
+    # Generate the AI definition based on inputs
+    sst.ai_definition = f"""
+    Name: {character_name}.
+    Personality: {personality_description}.
+    Topics: {favorite_topics}.
+    Communication Style: {communication_style}.
+    Language: {preferred_language}.
     """
-    sst.ai_definition = ai_definition
-    st.success("AI created successfully! Start chatting below.")
-
-  # Default AI definition if the form isn't submitted
-  if "ai_definition" not in sst:
-    sst.ai_definition = "You are a friendly and helpful assistant."
+    st.toast(f"✅ {character_name} created successfully! Start chatting below.")
 
   # Chat interface
   if "chat_history" not in sst:
