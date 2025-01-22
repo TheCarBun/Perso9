@@ -157,6 +157,10 @@ def main():
         communication_style = st.text_input("Communication Style", preset_data["communication_style"])
         preferred_language = st.text_input("Preferred Language", preset_data["preferred_language"])
       submitted_form = st.form_submit_button("Create AI")
+    if "chat_history" in sst:
+      if st.button("Clear Chat History", type='primary', use_container_width=True):
+        initialize_chat_history()
+        st.toast("🧹 Chat cleared successfully")
 
   if submitted_form:
     # Generate the AI definition based on inputs
