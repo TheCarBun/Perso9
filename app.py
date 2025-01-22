@@ -159,7 +159,7 @@ def main():
       preferred_language = preset_data["preferred_language"]
       submitted_form = True
     
-    if sst.chat_history:
+    if "chat_history" in sst:
       if st.button("Clear Chat History", type='primary', use_container_width=True):
         initialize_chat_history()
         st.toast("🧹 Chat cleared successfully")
