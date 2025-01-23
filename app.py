@@ -135,28 +135,27 @@ def main():
             list(presets.keys()) + ["Custom"],
             index=0
         )
-    with st.form(f"{preset_choice}_customization_form"):
-      st.write(f"✨ Customize '{preset_choice}' AI below:")
-
-      if preset_choice == "Custom":
-        character_name = st.text_input("Character Name", "Perso9")
-        personality_description = st.text_area("Describe the Personality", "Friendly and helpful.")
-        favorite_topics = st.text_input("Topics of Interest", "Technology, Science, Art")
-        communication_style = st.selectbox(
-            "Communication Style", 
-            ["Casual", "Formal", "Motivational", "Technical"], 
-            index=0
-        )
-        preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
-      else:
-        # Pre-fill the form fields with the selected preset values
-        preset_data = presets[preset_choice]
-        character_name = st.text_input("Character Name", preset_choice)
-        personality_description = st.text_area("Describe the Personality", preset_data["personality_description"])
-        favorite_topics = st.text_input("Topics of Interest", preset_data["favorite_topics"])
-        communication_style = st.text_input("Communication Style", preset_data["communication_style"])
-        preferred_language = st.text_input("Preferred Language", preset_data["preferred_language"])
-      submitted_form = st.form_submit_button("Create AI")
+    with st.expander(f"✨ Customize **{preset_choice}** AI below", expanded=False):
+      with st.form(f"{preset_choice}_customization_form"):
+        if preset_choice == "Custom":
+          character_name = st.text_input("Character Name", "Perso9")
+          personality_description = st.text_area("Describe the Personality", "Friendly and helpful.")
+          favorite_topics = st.text_input("Topics of Interest", "Technology, Science, Art")
+          communication_style = st.selectbox(
+              "Communication Style", 
+              ["Casual", "Formal", "Motivational", "Technical"], 
+              index=0
+          )
+          preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
+        else:
+          # Pre-fill the form fields with the selected preset values
+          preset_data = presets[preset_choice]
+          character_name = st.text_input("Character Name", preset_choice)
+          personality_description = st.text_area("Describe the Personality", preset_data["personality_description"])
+          favorite_topics = st.text_input("Topics of Interest", preset_data["favorite_topics"])
+          communication_style = st.text_input("Communication Style", preset_data["communication_style"])
+          preferred_language = st.text_input("Preferred Language", preset_data["preferred_language"])
+        submitted_form = st.form_submit_button("Create AI")
     if "chat_history" in sst:
       if st.button("Clear Chat History", type='primary', use_container_width=True):
         initialize_chat_history()
