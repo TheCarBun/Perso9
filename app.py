@@ -133,7 +133,8 @@ def main():
       preset_choice = st.radio(
             "Choose a Character Preset:",
             list(presets.keys()) + ["Custom"],
-            index=0
+            index=0,
+            label_visibility="collapsed"
         )
     with st.expander(f"✨ Customize **{preset_choice}** AI below", expanded=False):
       with st.form(f"{preset_choice}_customization_form"):
@@ -147,6 +148,8 @@ def main():
               index=0
           )
           preferred_language = st.selectbox("Preferred Language", ["English", "Spanish", "French"], index=0)
+          submitted_form = st.form_submit_button("Create AI")
+
         else:
           # Pre-fill the form fields with the selected preset values
           preset_data = presets[preset_choice]
@@ -155,7 +158,8 @@ def main():
           favorite_topics = st.text_input("Topics of Interest", preset_data["favorite_topics"])
           communication_style = st.text_input("Communication Style", preset_data["communication_style"])
           preferred_language = st.text_input("Preferred Language", preset_data["preferred_language"])
-        submitted_form = st.form_submit_button("Create AI")
+          submitted_form = st.form_submit_button("Create AI")
+          submitted_form = True
     if "chat_history" in sst:
       if st.button("Clear Chat History", type='primary', use_container_width=True):
         initialize_chat_history()
