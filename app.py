@@ -7,6 +7,8 @@ import json, os
 client = OpenAI(
     api_key= st.secrets['OPENAI_API_KEY']
 )
+
+default_ai_avatar = "https://api.dicebear.com/9.x/lorelei/svg?seed=Sophia&backgroundColor=b6e3f4"
 user_img = "https://api.dicebear.com/9.x/lorelei/svg?seed=Robert&flip=true&eyebrows=variant10&eyes=variant06&hair=variant04&head=variant04&mouth=happy02&nose=variant03&backgroundColor=b6e3f4"
 
 def initialize_chat_history():
@@ -169,7 +171,7 @@ def main():
         initialize_chat_history()
         st.toast("🧹 Chat cleared successfully")
 
-    ai_avatar=preset_data.get("avatar_icon", "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Ryan")
+    ai_avatar=preset_data.get("avatar_icon", default_ai_avatar)
 
   if submitted_form:
     # Generate the AI definition based on inputs
