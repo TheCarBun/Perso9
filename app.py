@@ -67,7 +67,7 @@ def generate_response(ai_definition:str, chat_history:list):
   messages = [{"role": "system", "content": ai_definition}] + chat_history
   response = client.chat.completions.create(
           messages=messages,
-          model="gpt-4o"
+          model="gpt-4o-mini"
       )
   return response.choices[0].message.content
 
