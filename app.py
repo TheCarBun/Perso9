@@ -130,18 +130,18 @@ def main():
 
   # Form for AI customization
   with st.sidebar:
-    st.markdown("# 🦊 Create Your AI Character")
+    st.markdown("# :material/border_color: Create Your AI Character")
     with st.container(border=True):
-      st.write("Personalize your AI by filling in a few details or choose a preset!")
+      st.markdown(":material/bolt: **Pick a preset:**")
 
       # Character Presets
-      preset_choice = st.radio(
+      preset_choice = st.selectbox(
             "Choose a Character Preset:",
             list(presets.keys()) + ["Custom"],
             index=0,
             label_visibility="collapsed"
         )
-    with st.expander(f"✨ Customize **{preset_choice}** AI below", expanded=False):
+    with st.expander(f":material/star: Customize **{preset_choice}** AI below", expanded=False):
       with st.form(f"{preset_choice}_customization_form"):
         if preset_choice == "Custom":
           preset_data = {}
