@@ -90,7 +90,7 @@ def load_presets(file_path="presets.json"):
     print("❗Error: Preset file not found.")
     return {}
   try:
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding='utf-8') as file:
       return json.load(file)
   except Exception as e:
     print(f"❗Error loading presets: {e}")
