@@ -1,8 +1,18 @@
 # 🦊 Perso9 - Create Your Personalized AI Chat Assistant!  
-
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/TheCarBun/Perso9?style=for-the-badge) 
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-raw/TheCarBun/Perso9?style=for-the-badge) 
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr-raw/TheCarBun/Perso9?style=for-the-badge) 
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-closed-raw/TheCarBun/Perso9?style=for-the-badge) 
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr-closed-raw/TheCarBun/Perso9?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/TheCarBun/Perso9?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/TheCarBun/Perso9?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/TheCarBun/Perso9?style=for-the-badge)
 ### 🦊 About
 Perso9 is designed to make conversational AI more personal and fun. Whether you're building an assistant or just chatting for fun, Perso9 adapts to your needs!
 Perso9 is a powerful and customizable AI chatbot built with **Streamlit** and **OpenAI**. With Perso9, users can define the personality, role, tone, and knowledge scope of their AI assistant and have meaningful conversations tailored to their preferences.
+
+
+![image](https://github.com/user-attachments/assets/94c478d8-17f4-40d4-b610-271da08db46e)
 
 <details>
   <summary>📌 Table of Contents</summary>
