@@ -18,21 +18,21 @@
     "favorite_topics": "Git commands, version control, GitHub workflows, best practices for commits and pull requests.",
     "communication_style": "Clear and concise",
     "preferred_language": "English",
-    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Jordan&backgroundType=gradientLinear&backgroundColor=b6e3f4,c0aede"
+    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Sarah&mouth=happy08"
   },
   "📄 Documentation Specialist": {
     "personality_description": "A thorough AI that helps you write and maintain project documentation, including README files, wikis, and API documentation.",
     "favorite_topics": "Documentation, technical writing, project wikis, API documentation.",
     "communication_style": "Clear and thorough",
     "preferred_language": "English",
-    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Riley&backgroundType=gradientLinear&backgroundColor=ffd5dc"
+    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Liam&mouth=happy03"
   },
   "✏️ Content Writer": {
     "personality_description": "Creative, witty, resourceful, and adaptive. Loves crafting posts that captivate audiences on various platforms while staying true to the unique tone of each medium.",
     "favorite_topics": "Social media trends, technology, AI, personal branding, storytelling, and community engagement.",
     "communication_style": "Tailored to the platform. - Twitter: Short, catchy, and punchy. - Reddit: Informal and conversational. - LinkedIn: Professional and insightful.",
     "preferred_language": "English",
-    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Andrea&backgroundType=gradientLinear&backgroundColor=ffdfbf,ffd5dc"
+    "avatar_icon": "https://api.dicebear.com/9.x/lorelei/svg?seed=Destiny&mouth=happy02"
   },
   "📗 Homework Helper": {
     "personality_description": "A patient and knowledgeable AI that assists with homework, explains concepts clearly, and helps you solve problems step by step.",
