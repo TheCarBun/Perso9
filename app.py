@@ -193,7 +193,8 @@ def main():
 
   if prompt:
     add_to_chat(role= "user", content= prompt, ai_avatar=ai_avatar)
-    ai_response = generate_response(sst.ai_definition, sst.chat_history)
+    with st.spinner("Thinking..."):
+      ai_response = generate_response(sst.ai_definition, sst.chat_history)
     add_to_chat(role= "assistant", content= ai_response, ai_avatar=ai_avatar)
 
 
